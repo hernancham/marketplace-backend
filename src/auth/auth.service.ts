@@ -29,11 +29,17 @@ export class AuthService {
       throw new UnauthorizedException('La contraseña no es válida');
     }
 
-    const payload = { email: user.email, role: user.role };
+    const payload = {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      status: user.status
+    };
 
     const accessToken = await this.jwtService.signAsync(payload);
 
-    return { token: accessToken, email: user.email };
+    return { token: accessToken, user: payload };
   }
 
   async register(registerAuthDto: RegisterAuthDto) {
@@ -57,7 +63,7 @@ export class AuthService {
     };
   }
 
-  async profile (email: string) {
+  async profile(email: string) {
     const user = await this.usersService.findOneByEmail(email);
     if (!user) {
       throw new UnauthorizedException('El usuario no existe');
