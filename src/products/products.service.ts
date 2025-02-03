@@ -5,7 +5,7 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Product } from './entities/product.entity';
 import { CloudinaryConfig } from 'src/config/cloudinary.config';
-import { User } from 'src/users/entities/user.entity';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class ProductsService {
@@ -13,7 +13,7 @@ export class ProductsService {
     @InjectRepository(Product)
     private readonly productRepository: Repository<Product>,
     private readonly cloudinary: CloudinaryConfig,
-    private readonly userRepository: Repository<User>,
+    private readonly usersService: UsersService,
   ) {}
 
    // ✅ Subir imagen a Cloudinary
@@ -25,7 +25,7 @@ export class ProductsService {
   // ✅ Crear un nuevo producto
   async create(createProductDto: CreateProductDto,userId: string, file?: Express.Multer.File): Promise<Product> {
 
-    const user = await this.userRepository.findOne({ where: { id: userId } });
+    const user = await this.usersService.findOne(userId);
     if (!user) throw new NotFoundException('Usuario no encontrado');
 
     let imageUrl = '';

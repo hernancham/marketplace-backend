@@ -5,8 +5,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Product } from './entities/product.entity';
 import { UsersModule } from 'src/users/users.module';
 import { CloudinaryModule } from 'src/cloudinary/cloudinary.module';
+import { AuthModule } from 'src/auth/auth.module';
 @Module({
-  imports: [TypeOrmModule.forFeature([Product]), UsersModule, CloudinaryModule], // 🛠️ Inyectamos el repo de Product
+  imports: [TypeOrmModule.forFeature([Product]), UsersModule, CloudinaryModule, AuthModule], // 🛠️ Inyectamos el repo de Product
   exports: [ProductsService], // Opcional, si necesitas compartir el servicio con otros módulos
   controllers: [ProductsController],
   providers: [ProductsService],
