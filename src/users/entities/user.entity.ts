@@ -1,12 +1,20 @@
 import {
-    Entity,
-    PrimaryGeneratedColumn,
-    Column,
-    CreateDateColumn,
-    UpdateDateColumn,
-    BeforeInsert,
-    DeleteDateColumn,
-  } from 'typeorm';
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  BeforeInsert,
+  DeleteDateColumn,
+  OneToMany,
+} from 'typeorm';
+import { Product } from 'src/products/entities/product.entity';
+
+export enum UserRole {
+  Vendedor = 'vendedor',
+  Comprador = 'comprador',
+  Admin = 'admin',
+}
   
   @Entity('users')
   export class User {
@@ -24,12 +32,15 @@ import {
     password: string;
   
     // Rol del usuario: por defecto será "buyer"
-    @Column({ default: 'buyer' }) // Puede ser: 'buyer', 'seller', 'admin'
-    role: string;
+    @Column({ type: 'enum', enum: UserRole, default: UserRole.Comprador })
+    role: UserRole;
   
     // Estado de la cuenta: Activo, Inactivo, etc.
     @Column({ default: 'active' }) // Puede ser: 'active', 'inactive', 'banned'
     status: string;
+
+    @OneToMany(() => Product, (product) => product.seller)
+    products: Product[];
   
     // Control de fechas
     @CreateDateColumn()

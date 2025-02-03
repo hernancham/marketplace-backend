@@ -3,7 +3,7 @@ import { AuthService } from './auth.service';
 import { LoginAuthDto } from './dto/login-auth.dto';
 import { RegisterAuthDto } from './dto/register-auth.dto';
 import { Auth } from './decorators/auth.decorator';
-import { Role } from './enums/role.enum';
+import { UserRole } from 'src/users/entities/user.entity';
 
 interface RequestWithUser extends Request {
   user: {
@@ -27,7 +27,7 @@ export class AuthController {
   }
 
   @Get('profile')
-  @Auth(Role.Buyer, Role.Seller, Role.Admin)
+  @Auth(UserRole.Comprador, UserRole.Vendedor, UserRole.Admin)
   profile(@Request() req: RequestWithUser) {
     return this.authService.profile(req.user.email);
   }
