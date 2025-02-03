@@ -35,6 +35,9 @@ export class Product {
   @JoinColumn({ name: 'sellerId' }) // Clave foránea
   seller: User;
 
+  @Column({ nullable: true })
+  imageUrl: string; // URL de la imagen del producto
+
   // Control de fechas
   @CreateDateColumn()
   createdAt: Date;

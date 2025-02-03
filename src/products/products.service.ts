@@ -4,17 +4,41 @@ import { Repository } from 'typeorm';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Product } from './entities/product.entity';
+import { CloudinaryConfig } from 'src/config/cloudinary.config';
+import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class ProductsService {
   constructor(
     @InjectRepository(Product)
     private readonly productRepository: Repository<Product>,
+    private readonly cloudinary: CloudinaryConfig,
+    private readonly userRepository: Repository<User>,
   ) {}
 
+   // ✅ Subir imagen a Cloudinary
+   async uploadImage(file: Express.Multer.File): Promise<string> {
+    const result = await this.cloudinary.instance.uploader.upload(file.path);
+    return result.secure_url; // Retorna la URL de la imagen subida
+  }
+
   // ✅ Crear un nuevo producto
-  async create(createProductDto: CreateProductDto): Promise<Product> {
-    const newProduct = this.productRepository.create(createProductDto);
+  async create(createProductDto: CreateProductDto,userId: string, file?: Express.Multer.File): Promise<Product> {
+
+    const user = await this.userRepository.findOne({ where: { id: userId } });
+    if (!user) throw new NotFoundException('Usuario no encontrado');
+
+    let imageUrl = '';
+    if (file) {
+      imageUrl = await this.uploadImage(file);
+    }
+
+    const newProduct = this.productRepository.create({
+      ...createProductDto,
+      seller: user,
+      imageUrl, // Almacena solo una imagen
+    });
+
     return await this.productRepository.save(newProduct);
   }
 

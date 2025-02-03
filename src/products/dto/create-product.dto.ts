@@ -20,18 +20,11 @@ export class CreateProductDto {
 
   @IsNumber()
   @Min(0)
-  stock: number;
+  @IsOptional()
+  stock?: number;
 
   @IsEnum(ProductStatus)
   @IsOptional() // Opcional, porque tiene un valor por defecto en la entidad
   status?: ProductStatus;
-
-  @IsString()
-  @IsNotEmpty()
-  sellerId: string; // Se espera que el front envíe el `sellerId` al crear el producto
-
-  @IsArray()
-  @IsOptional()
-  images?: string[];
 }
 
