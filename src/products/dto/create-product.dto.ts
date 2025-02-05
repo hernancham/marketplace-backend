@@ -29,5 +29,9 @@ export class CreateProductDto {
   @IsEnum(ProductStatus)
   @IsOptional() // Opcional, porque tiene un valor por defecto en la entidad
   status?: ProductStatus;
+
+  @IsString()
+  @IsOptional()
+  imageUrl?: string;
 }
 

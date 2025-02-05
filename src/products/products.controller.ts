@@ -22,14 +22,12 @@ export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
   @Post()
-  @UseInterceptors(FileInterceptor('image')) // Solo una imagen
   @Auth(UserRole.Admin, UserRole.Vendedor)
   create(
     @Body() createProductDto: CreateProductDto,
-    @GetUser('id') userId: string,
-    @UploadedFile() image: Express.Multer.File,
+    @GetUser('id') userId: string
   ) {
-    return this.productsService.create(createProductDto, userId, image);
+    return this.productsService.create(createProductDto, userId);
   }
 
   @Get()
