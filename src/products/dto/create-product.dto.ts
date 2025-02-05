@@ -1,4 +1,5 @@
-import { IsString, IsNotEmpty, IsNumber, IsEnum, IsOptional, IsArray, Min } from 'class-validator';
+import { IsString, IsNotEmpty, IsNumber, IsEnum, IsOptional, Min} from 'class-validator';
+import { Type } from 'class-transformer';
 import { ProductStatus } from '../entities/product.entity';
 
 export class CreateProductDto {
@@ -16,11 +17,13 @@ export class CreateProductDto {
 
   @IsNumber()
   @Min(0)
+  @Type(() => Number)
   price: number;
 
   @IsNumber()
   @Min(0)
   @IsOptional()
+  @Type(() => Number)
   stock?: number;
 
   @IsEnum(ProductStatus)
