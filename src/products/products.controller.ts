@@ -27,9 +27,9 @@ export class ProductsController {
   create(
     @Body() createProductDto: CreateProductDto,
     @GetUser('id') userId: string,
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFile() image: Express.Multer.File,
   ) {
-    return this.productsService.create(createProductDto, userId, file);
+    return this.productsService.create(createProductDto, userId, image);
   }
 
   @Get()
