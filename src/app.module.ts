@@ -1,12 +1,13 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
-import { AuthModule } from './auth/auth.module';
-import { ProductsModule } from './products/products.module';
-import { ImagesModule } from './images/images.module';
+import { UserModule } from './modules/user/user.module';
+import { ProductModule } from './modules/product/product.module';
+import { CategoryModule } from './modules/category/category.module';
+import { OrderModule } from './modules/order/order.module';
+import { ReviewModule } from './modules/review/review.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { ImageModule } from './modules/image/image.module';
 
 @Module({
   imports: [
@@ -20,12 +21,15 @@ import { ImagesModule } from './images/images.module';
       autoLoadEntities: true,
       synchronize: true, // ¡Solo para desarrollo! Desactívalo en producción.
     }),
-    UsersModule,
+    UserModule,
+    ProductModule,
+    CategoryModule,
+    OrderModule,
+    ReviewModule,
     AuthModule,
-    ProductsModule,
-    ImagesModule,
+    ImageModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
